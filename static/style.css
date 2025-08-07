@@ -1,0 +1,43 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f4f6; /* light grey */
+    margin: 0;
+    padding: 0;
+  }
+  
+  h2 {
+    color: #b91c1c; /* red-700 */
+  }
+  
+  .input {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+  }
+  
+  .btn {
+    background-color: #b91c1c; /* red-700 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #7f1d1d; /* red-900 */
+  }
+  
+  .link {
+    color: #6b7280; /* gray-600 */
+    font-size: 0.875rem;
+    text-decoration: underline;
+    display: block;
+    margin-top: 0.5rem;
+  }
+  button {
+    font-size: 16px;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-7xl mx-auto">
+    <h1 class="text-2xl font-bold text-center text-red-600 mb-6">Panjab University - Admin Dashboard</h1>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 mb-6">
+      <a href="/qr_scanner" class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow">
+        <i data-lucide="scan-line"></i> QR Scanner
+      </a>
+      <a href="/admin/feedbacks" class="flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded shadow">
+        <i data-lucide="message-square-text"></i> Feedbacks
+      </a>
+      <a href="/admin/complaints" class="flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded shadow">
+        <i data-lucide="alert-circle"></i> Complaints
+      </a>
+      <button onclick="exportToExcel()" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
+        <i data-lucide="file-spreadsheet"></i> Export to Excel
+      </button>
+      <button onclick="exportToPDF()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+        <i data-lucide="file-text"></i> Export to PDF
+      </button>
+    </div>
+
+    <!-- Month Selector -->
+    <form method="get" action="/dashboard" class="flex justify-center mb-4">
+      <input type="month" name="month" value="{{ selected_month }}"
+             class="border border-gray-300 px-2 py-1 rounded-l">
+      <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded-r hover:bg-red-600">Go</button>
+    </form>
+
+    <!-- Table with Sort/Pagination -->
+    <div class="overflow-x-auto">
+      <table id="studentsTable" class="min-w-full table-auto border-collapse border border-gray-300">
+        <thead class="bg-gray-200 text-sm cursor-pointer">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2" onclick="sortTable(0)">Name ⬍</th>
+            <th class="border border-gray-300 px-4 py-2" onclick="sortTable(1)">Hostel Roll No. ⬍</th>
+            <th class="border border-gray-300 px-4 py-2" onclick="sortTable(2)">Meal Count ⬍</th>
+            <th class="border border-gray-300 px-4 py-2" onclick="sortTable(3)">Total Bill (₹) ⬍</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in student_data %}
+            <tr class="text-center hover:bg-gray-50">
+              <td class="border px-4 py-2">{{ student.name }}</td>
+              <td class="border px-4 py-2">{{ student.hostel_rollno }}</td>
+              <td class="border px-4 py-2">{{ student.count }}</td>
+              <td class="border px-4 py-2">{{ student.bill }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function exportToExcel() {
+      const table = document.getElementById("studentsTable");
+      const wb = XLSX.utils.table_to_book(table, {sheet: "Students"});
+      XLSX.writeFile(wb, "Student_Meal_Report.xlsx");
+    }
+
+    async function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Panjab University - Student Meal Report", 20, 20);
+
+      let y = 30;
+      document.querySelectorAll("#studentsTable tbody tr").forEach((row, idx) => {
+        const cells = row.querySelectorAll("td");
+        const rowText = Array.from(cells).map(cell => cell.textContent.trim()).join(" | ");
+        doc.text(rowText, 20, y);
+        y += 10;
+      });
+
+      doc.save("Student_Meal_Report.pdf");
+    }
+
+    function sortTable(columnIndex) {
+      const table = document.getElementById("studentsTable");
+      const rows = Array.from(table.rows).slice(1);
+      const sorted = rows.sort((a, b) =>
+        a.cells[columnIndex].textContent.localeCompare(b.cells[columnIndex].textContent)
+      );
+      rows.forEach(row => table.tBodies[0].appendChild(row));
+    }
+  </script>
+</body>
+</html>

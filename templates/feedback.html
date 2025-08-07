@@ -1,0 +1,5 @@
+<h3>Submit {{ 'Feedback' if request.path == '/feedback' else 'Complaint' }}</h3>
+<form method="POST">
+  <textarea name="message" placeholder="Write here..." rows="5" cols="50"></textarea><br>
+  <button type="submit">Submit</button>
+</form>

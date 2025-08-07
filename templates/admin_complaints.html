@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Complaints</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-5xl mx-auto">
+    <h1 class="text-2xl font-bold text-center text-red-600 mb-6">Complaints</h1>
+    
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300 rounded">
+        <thead>
+          <tr class="bg-gray-200 text-gray-700">
+            <th class="py-2 px-4 text-left border-b">Complaint</th>
+            <th class="py-2 px-4 text-left border-b">Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in complaints %}
+          <tr class="hover:bg-gray-50">
+            <td class="py-2 px-4 border-b">{{ c.message }}</td>
+            <td class="py-2 px-4 border-b">{{ c.submitted_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/dashboard" class="text-blue-600 hover:underline">← Back to Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Scanner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md text-center">
+    <h2 class="text-2xl font-bold text-red-600 mb-4">Scan QR Code</h2>
+
+    <div id="reader" class="mx-auto mb-4" style="width: 300px;"></div>
+
+    <div id="result" class="text-lg font-semibold mt-4"></div>
+  </div>
+
+  <script>
+    const resultDiv = document.getElementById("result");
+    const html5QrCode = new Html5Qrcode("reader");
+
+    function onScanSuccess(decodedText, decodedResult) {
+      html5QrCode.stop().then(() => {
+        console.log("QR scanning stopped.");
+      }).catch(err => {
+        console.error("Error stopping scanner", err);
+      });
+
+      resultDiv.textContent = "⏳ Verifying...";
+      resultDiv.style.color = "gray";
+
+      fetch("/validate_qr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ qr_data: decodedText })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "valid") {
+          resultDiv.textContent = `✅ Verified: ${data.name} | ${data.meal} at ${data.datetime}`;
+          resultDiv.style.color = "green";
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 2000);
+        } else if (data.status === "duplicate") {
+          resultDiv.textContent = `⚠️ Already logged`;
+          resultDiv.style.color = "orange";
+        } else {
+          resultDiv.textContent = `❌ Invalid QR code`;
+          resultDiv.style.color = "red";
+        }
+      })
+      .catch(err => {
+        resultDiv.textContent = "❌ Error verifying QR";
+        resultDiv.style.color = "red";
+        console.error(err);
+      });
+    }
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        html5QrCode.start(
+          { facingMode: "environment" },
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+          },
+          onScanSuccess
+        );
+      }
+    }).catch(err => {
+      console.error("Camera error: ", err);
+      resultDiv.textContent = "❌ Cannot access camera";
+      resultDiv.style.color = "red";
+    });
+  </script>
+
+</body>
+</html>

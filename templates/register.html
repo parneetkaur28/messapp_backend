@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Mess Management</title>
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    function toggleHostelRollInput() {
+      const roleSelect = document.getElementById("role");
+      const hostelRollDiv = document.getElementById("hostel-roll-wrapper");
+
+      if (roleSelect.value === "student") {
+        hostelRollDiv.style.display = "block";
+      } else {
+        hostelRollDiv.style.display = "none";
+      }
+    }
+
+    window.onload = function() {
+      toggleHostelRollInput(); // run on page load
+      document.getElementById("role").addEventListener("change", toggleHostelRollInput);
+    };
+  </script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-100">
+
+  <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-center mb-4 text-red-700">
+      Panjab University - Mess Management System
+    </h2>
+    <h3 class="text-xl font-semibold text-center mb-4">Register</h3>
+
+    <form method="POST">
+      <input name="name" placeholder="Full Name" class="input">
+      <input name="email" placeholder="Email" type="email" class="input">
+      <input name="password" placeholder="Password" type="password" class="input">
+      <input name="phone" placeholder="Phone" class="input">
+
+      <!-- Hostel Roll No - hidden unless student -->
+      <div id="hostel-roll-wrapper" style="display: none;">
+        <input name="hostel_rollno" placeholder="Hostel Roll Number" class="input">
+      </div>
+
+      <select name="role" id="role" class="input">
+        <option value="student">Student</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <button type="submit" class="btn w-full mt-2">Register</button>
+    </form>
+
+    <a href="/login" class="link text-center">Already have an account? Login</a>
+  </div>
+
+</body>
+</html>

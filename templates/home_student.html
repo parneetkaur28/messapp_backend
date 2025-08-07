@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Panjab University - Mess Management System</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-gray-100 text-center min-h-screen flex items-center justify-center">
+
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-xl border border-gray-300">
+        <h1 class="text-2xl font-bold text-red-600 mb-6">Panjab University - Mess Management System</h1>
+        <h2 class="text-xl font-semibold mb-4">Welcome, {{ user.name }}</h2>
+
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+            <form action="/add_meal/lunch" method="get">
+                <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition">Add Lunch</button>
+            </form>
+
+            <form action="/add_meal/dinner" method="get">
+                <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition">Add Dinner</button>
+            </form>
+
+            <form action="/dashboard" method="get">
+                <button type="submit" class="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition">Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

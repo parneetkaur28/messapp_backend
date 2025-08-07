@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Token</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-center border border-gray-300">
+
+    <h1 class="text-2xl font-bold text-red-600 mb-6">Panjab University - Mess Token</h1>
+
+    <div class="text-left text-gray-800 space-y-2 mb-6">
+      <p><span class="font-semibold">Name:</span> {{ token.name }}</p>
+      <p><span class="font-semibold">Phone:</span> {{ token.phone }}</p>
+      <p><span class="font-semibold">Meal:</span> {{ token.meal|capitalize }}</p>
+      <p><span class="font-semibold">Date:</span> {{ token.date }}</p>
+      <p><span class="font-semibold">Time:</span> {{ token.time }}</p>
+    </div>
+
+    <div class="mb-4">
+      <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="mx-auto w-40 h-40 border-2 border-gray-300 rounded-lg shadow-md">
+    </div>
+
+    <a href="/student_home">
+      <button class="mt-4 bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition">Back to Home</button>
+    </a>
+
+  </div>
+</body>
+</html>
